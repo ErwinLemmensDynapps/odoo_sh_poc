@@ -18,8 +18,8 @@ class ProductProduct(models.Model):
     @api.model
     def send_to_akeneo(self):
         # get Authorization token
-        if not self.env['ir.config_parameter'].sudo().get_param('sale.xx_enable_akeneo_interface'):
-            return
+        # if not self.env['ir.config_parameter'].sudo().get_param('sale.xx_enable_akeneo_interface'):
+        #     return
         base_url = self.env['ir.config_parameter'].sudo().get_param('sale.xx_akeneo_base_url')
         url = base_url + '/api/oauth/v1/token'
         username = self.env['ir.config_parameter'].sudo().get_param('sale.xx_akeneo_user')
