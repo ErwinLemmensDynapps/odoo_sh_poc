@@ -18,15 +18,16 @@ class ProductProduct(models.Model):
     @api.model
     def send_to_akeneo(self):
         # get Authorization token
-        if not self.pool['ir.values'].get_default(self._cr, SUPERUSER_ID, 'sale.config.settings', 'xx_enable_akeneo_interface'):
+        if not self.env['ir.config_parameter'].sudo().get_param('sale.xx_enable_akeneo_interface'):
             return
-        base_url = self.pool['ir.values'].get_default(self._cr, SUPERUSER_ID, 'sale.config.settings', 'xx_akeneo_base_url')
+        base_url = self.env['ir.config_parameter'].sudo().get_param('sale.xx_akeneo_base_url')
         url = base_url + '/api/oauth/v1/token'
-        username = self.pool['ir.values'].get_default(self._cr, SUPERUSER_ID, 'sale.config.settings', 'xx_akeneo_user')
-        password = self.pool['ir.values'].get_default(self._cr, SUPERUSER_ID, 'sale.config.settings', 'xx_akeneo_password')
-        client_id = self.pool['ir.values'].get_default(self._cr, SUPERUSER_ID, 'sale.config.settings', 'xx_akeneo_client_id')
-        secret = self.pool['ir.values'].get_default(self._cr, SUPERUSER_ID, 'sale.config.settings', 'xx_akeneo_secret')
-        family = self.pool['ir.values'].get_default(self._cr, SUPERUSER_ID, 'sale.config.settings', 'xx_akeneo_family')
+        username = self.env['ir.config_parameter'].sudo().get_param('sale.xx_akeneo_user')
+        password = self.env['ir.config_parameter'].sudo().get_param('sale.xx_akeneo_password')
+        client_id = self.env['ir.config_parameter'].sudo().get_param('sale.xx_akeneo_client_id')
+        secret = self.env['ir.config_parameter'].sudo().get_param('sale.xx_akeneo_secret')
+        family = self.env['ir.config_parameter'].sudo().get_param('sale.xx_akeneo_family')
+
         authorization = 'Basic %s' % base64.b64encode(client_id+':'+secret)
         headers = {'Content-Type': 'application/json',
                    'Authorization': authorization}
