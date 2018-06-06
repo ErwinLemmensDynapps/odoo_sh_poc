@@ -42,13 +42,12 @@ class ProductProduct(models.Model):
           "enabled": true,
           "family": "%s",
           "groups": [],
-          "variant_group": null,
           "values": {
             "name": [
               {
                 "data": "%s",
-                "locale": "en_GB",
-                "scope": "50five"
+                "locale": null,
+                "scope": null
               }]
           }
         }''' % (self.barcode, family, self.name)
