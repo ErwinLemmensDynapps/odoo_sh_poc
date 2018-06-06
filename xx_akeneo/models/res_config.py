@@ -8,13 +8,13 @@ from odoo import fields, models, api
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
-    xx_enable_akeneo_interface = fields.Boolean("Enable Akeneo Interface"),
-    xx_akeneo_base_url = fields.Char("Akeneo base url"),
-    xx_akeneo_user = fields.Char("Akeneo User"),
-    xx_akeneo_password = fields.Char("Akeneo Password"),
-    xx_akeneo_client_id = fields.Char("Akeneo Client Id"),
-    xx_akeneo_secret = fields.Char("Akeneo Secret"),
-    xx_akeneo_family = fields.Char("Akeneo Family"),
+    xx_enable_akeneo_interface = fields.Boolean("Enable Akeneo Interface")
+    xx_akeneo_base_url = fields.Char("Akeneo base url")
+    xx_akeneo_user = fields.Char("Akeneo User")
+    xx_akeneo_password = fields.Char("Akeneo Password")
+    xx_akeneo_client_id = fields.Char("Akeneo Client Id")
+    xx_akeneo_secret = fields.Char("Akeneo Secret")
+    xx_akeneo_family = fields.Char("Akeneo Family")
 
     @api.model
     def get_values(self):
