@@ -28,7 +28,7 @@ class ProductProduct(models.Model):
         secret = '113w260sc64g0k4c4wk4sk84swk08wwowc0w4kk4ocogwcgwsg'
         family = 'created_by_odoo'
 
-        authorization = 'Basic %s' % base64.b64encode(client_id+':'+secret)
+        authorization = 'Basic %s' % base64.b64encode((client_id + ':' + secret).encode('UTF-8'))
         headers = {'Content-Type': 'application/json',
                    'Authorization': authorization}
         data = '''{ "grant_type": "password", "username": "%s", "password": "%s"}''' % (username, password)
