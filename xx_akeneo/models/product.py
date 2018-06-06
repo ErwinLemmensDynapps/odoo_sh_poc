@@ -26,7 +26,7 @@ class ProductProduct(models.Model):
         password = 'admin'
         client_id = '1_1p8vk60u2h40ggc0kwgckc8ks88s8o0s4sowgkw48wogg0ss0o'
         secret = '3eosuc0kyv8ksoos00gc0gwo4k48wcgwo8c8484o88w084wswc'
-        family = 'created_by_odoo'
+        family = 'Accessories'
 
         authorization = 'Basic %s' % base64.b64encode((client_id + ':' + secret).encode('UTF-8'))
         headers = {'Content-Type': 'application/json',
