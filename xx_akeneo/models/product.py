@@ -2,9 +2,9 @@ import logging
 import requests
 import json
 import base64
-from openerp.exceptions import ValidationError
-from openerp import models, fields, api
-from openerp import SUPERUSER_ID
+from odoo.exceptions import ValidationError
+from odoo import models, fields, api
+from odoo import SUPERUSER_ID
 
 _logger = logging.getLogger(__name__)
 
