@@ -20,13 +20,13 @@ class ProductProduct(models.Model):
         # get Authorization token
         # if not self.env['ir.config_parameter'].sudo().get_param('sale.xx_enable_akeneo_interface'):
         #     return
-        base_url = self.env['ir.config_parameter'].sudo().get_param('sale.xx_akeneo_base_url')
+        base_url = 'https://demo.akeneo.com'
         url = base_url + '/api/oauth/v1/token'
-        username = self.env['ir.config_parameter'].sudo().get_param('sale.xx_akeneo_user')
-        password = self.env['ir.config_parameter'].sudo().get_param('sale.xx_akeneo_password')
-        client_id = self.env['ir.config_parameter'].sudo().get_param('sale.xx_akeneo_client_id')
-        secret = self.env['ir.config_parameter'].sudo().get_param('sale.xx_akeneo_secret')
-        family = self.env['ir.config_parameter'].sudo().get_param('sale.xx_akeneo_family')
+        username = 'admin'
+        password = 'admin'
+        client_id = '1_54bjrt3co84kg08w4kc8ggsck4cwwk8o4k4woowgw8c48ssc0g'
+        secret = '113w260sc64g0k4c4wk4sk84swk08wwowc0w4kk4ocogwcgwsg'
+        family = 'created_by_odoo'
 
         authorization = 'Basic %s' % base64.b64encode(client_id+':'+secret)
         headers = {'Content-Type': 'application/json',
