@@ -5,10 +5,10 @@
    <record id="res_config_settings_view_form" model="ir.ui.view">
         <field name="name">res.config.settings.view.form.inherit.sale</field>
         <field name="model">res.config.settings</field>
-        <field name="priority" eval="10"/>
+        <field name="priority" eval="999"/>
         <field name="inherit_id" ref="base.res_config_settings_view_form" />
         <field name="arch" type="xml">
-                <xpath expr="div[@data-key='sale_management']" position="inside">
+                <xpath expr="//div[@data-key='sale_management']" position="inside">
                     <group string="Akeneo Interface Settings">
                         <field name="xx_enable_akeneo_interface" widget="boolean"/>
                         <field name="xx_akeneo_base_url" class="oe_inline"/>
