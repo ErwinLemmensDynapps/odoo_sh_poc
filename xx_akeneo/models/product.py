@@ -33,7 +33,7 @@ class ProductProduct(models.Model):
                    'Authorization': authorization}
         data = '''{ "grant_type": "password", "username": "%s", "password": "%s"}''' % (username, password)
         response = requests.post(url, data=data, headers=headers)
-        access_token = json.loads(response._content)['access_token']
+        access_token = 'YTI0NDcwNjQ5OWE5NGY4NDlhNzdkNTg5MmEyYzBjZjE1MDg0ZGNkNGZlOWRkMjEwYjFjNzY0ODkyYmNhYmUxNw'
         authorization = 'Bearer %s' % access_token
         # create product
         url = base_url + '/api/rest/v1/products'
