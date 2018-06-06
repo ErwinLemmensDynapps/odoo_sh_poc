@@ -2,9 +2,9 @@ import logging
 import requests
 import json
 import base64
-from openerp.exceptions import ValidationError
-from openerp import models, fields, api
-from openerp import SUPERUSER_ID
+from odoo.exceptions import ValidationError
+from odoo import models, fields, api
+from odoo import SUPERUSER_ID
 
 _logger = logging.getLogger(__name__)
 
@@ -18,15 +18,16 @@ class ProductProduct(models.Model):
     @api.model
     def send_to_akeneo(self):
         # get Authorization token
-        if not self.pool['ir.values'].get_default(self._cr, SUPERUSER_ID, 'sale.config.settings', 'xx_enable_akeneo_interface'):
-            return
-        base_url = self.pool['ir.values'].get_default(self._cr, SUPERUSER_ID, 'sale.config.settings', 'xx_akeneo_base_url')
+        # if not self.env['ir.config_parameter'].sudo().get_param('sale.xx_enable_akeneo_interface'):
+        #     return
+        base_url = 'https://demo.akeneo.com'
         url = base_url + '/api/oauth/v1/token'
-        username = self.pool['ir.values'].get_default(self._cr, SUPERUSER_ID, 'sale.config.settings', 'xx_akeneo_user')
-        password = self.pool['ir.values'].get_default(self._cr, SUPERUSER_ID, 'sale.config.settings', 'xx_akeneo_password')
-        client_id = self.pool['ir.values'].get_default(self._cr, SUPERUSER_ID, 'sale.config.settings', 'xx_akeneo_client_id')
-        secret = self.pool['ir.values'].get_default(self._cr, SUPERUSER_ID, 'sale.config.settings', 'xx_akeneo_secret')
-        family = self.pool['ir.values'].get_default(self._cr, SUPERUSER_ID, 'sale.config.settings', 'xx_akeneo_family')
+        username = 'admin'
+        password = 'admin'
+        client_id = '1_54bjrt3co84kg08w4kc8ggsck4cwwk8o4k4woowgw8c48ssc0g'
+        secret = '113w260sc64g0k4c4wk4sk84swk08wwowc0w4kk4ocogwcgwsg'
+        family = 'created_by_odoo'
+
         authorization = 'Basic %s' % base64.b64encode(client_id+':'+secret)
         headers = {'Content-Type': 'application/json',
                    'Authorization': authorization}
@@ -41,13 +42,12 @@ class ProductProduct(models.Model):
           "enabled": true,
           "family": "%s",
           "groups": [],
-          "variant_group": null,
           "values": {
             "name": [
               {
                 "data": "%s",
-                "locale": "en_GB",
-                "scope": "50five"
+                "locale": null,
+                "scope": null
               }]
           }
         }''' % (self.barcode, family, self.name)
