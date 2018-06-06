@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_sale_config_settings" model="ir.ui.view">
+            <field name="name">Automate order flow settings</field>
+            <field name="model">sale.config.settings</field>
+            <field name="inherit_id" ref="base_setup.view_sale_config_settings"/>
+            <field name="arch" type="xml">
+                <div id="main" position="inside">
+                    <group string="Akeneo Interface Settings">
+                        <field name="xx_enable_akeneo_interface" widget="boolean"/>
+                        <field name="xx_akeneo_base_url" class="oe_inline"/>
+                        <field name="xx_akeneo_user" class="oe_inline"/>
+                        <field name="xx_akeneo_password" class="oe_inline"/>
+                        <field name="xx_akeneo_client_id"/>
+                        <field name="xx_akeneo_secret"/>
+                        <field name="xx_akeneo_family" class="oe_inline"/>
+                    </group>
+                </div>
+            </field>
+        </record>
+
+    </data>
+</openerp>
