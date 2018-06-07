@@ -14,7 +14,7 @@ class popup(models.TransientModel):
     _name = "gdf.popup"
 
     name = fields.Char("Title", readonly=True)
-    desc = fields.Text("Description", readonly=T
+    desc = fields.Text("Description", readonly=True)
 
 
 class mcs_config(models.Model):
