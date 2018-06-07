@@ -10,6 +10,13 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
+class popup(models.TransientModel):
+    _name = "gdf.popup"
+
+    name = fields.Char("Title", readonly=True)
+    desc = fields.Text("Description", readonly=T
+
+
 class mcs_config(models.Model):
     _name = 'mcs.config'
 
