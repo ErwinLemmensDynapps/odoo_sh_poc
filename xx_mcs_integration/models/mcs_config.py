@@ -14,8 +14,6 @@ class mcs_config(models.Model):
     _name = 'mcs.config'
 
     name = fields.Char("Name")
-    stock_picking_type_id = fields.Many2one("stock.picking.type", string="Warehouse (stock picking type)")
-    website_ids = fields.Many2many("website")
     mcs_shop = fields.Char("Shop")
     mcs_url = fields.Char("URL")
     mcs_username = fields.Char("Username")
