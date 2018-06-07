@@ -1,2 +1,2 @@
-suds
 client
+suds_jurko
