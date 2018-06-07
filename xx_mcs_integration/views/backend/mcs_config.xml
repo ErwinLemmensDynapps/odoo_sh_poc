@@ -36,14 +36,12 @@
             </group>
             <group>
               <group>
-                <field name="stock_picking_type_id"/>
                 <field name="mcs_username"/>
                 <field password="True" name="mcs_pwd"/>
               </group>
               <group>
                 <field name="mcs_shop"/>
                 <field name="mcs_version"/>
-                <field name="website_ids" widget="many2many_tags"/>
               </group>
             </group>
           </sheet>
@@ -57,7 +55,6 @@
       <field name="arch" type="xml">
         <tree>
           <field name="name"/>
-          <field name="stock_picking_type_id"/>
           <field name="mcs_shop"/>
         </tree>
       </field>
