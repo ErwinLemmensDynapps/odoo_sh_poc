@@ -103,6 +103,6 @@ class mcs_config(models.Model):
             response_str = client.service.stock_request(user, pwd, version, stock.__str__().decode("UTF-8"))
             response = ET.fromstring(response_str)
             message += "\n\nERROR:\n%s" % response.text if response.tag == "ERROR" else "\n\nLogin Sucess !"
-        except:
-            message = "Hello World Test with MCS has Failed"
+        except Exception as e:
+            message = "Hello World Test with MCS has Failed: %s" %e.message
         return self.get_message_popup(message)
