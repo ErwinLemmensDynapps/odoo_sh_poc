@@ -112,10 +112,10 @@ class mcs_config(models.Model):
         try:
             client, user, pwd, version = self.get_connection_info()
             msg= '<orders>\n   <order>\n      <orderid>TEST\\ODOO.sh</orderid>\n      <shop>50FIVE</shop>\n      <customerid>15167</customerid>\n      <email>lcretaz@hotmail.fr</email>\n      <phone></phone>\n      <ordernote></ordernote>\n      <language>fr_BE</language>\n      <shipping>\n         <shipping_method>TAX02</shipping_method>\n         <shipping_last_name>Cretaz Laurence</shipping_last_name>\n         <shipping_address>rue des Porettes  12 </shipping_address>\n         <shipping_postal>77210</shipping_postal>\n         <shipping_city>SAMOREAU</shipping_city>\n         <shipping_country>False</shipping_country>\n      </shipping>\n      <invoice>\n         <show_price>N</show_price>\n      </invoice>\n      <items>\n         <item>\n            <ProductName>Wireless Blood Pressure Monitor</ProductName>\n            <ProductCode>3700546700279</ProductCode>\n            <quantity>1</quantity>\n            <item_units>1</item_units>\n            <item_weight>0.0</item_weight>\n         </item>\n      </items>\n   </order>\n</orders>'
-            response_str = client.service.stock_request(user, pwd, version, msg)
+            response_str = client.service.order_creation(user, pwd, version, msg)
             response = ET.fromstring(response_str)
             message = "Send order to MCS\n%s"
             message += "\n\nERROR:\n%s" % response.text if response.tag == "ERROR" else "\n\nLogin Sucess !"
         except Exception as e:
-            message = "Hello World Test with MCS has Failed: %s \n %s" % (e, stock.__str__)
+            message = "Hello World Test with MCS has Failed: %s \n %s" % (e, msg)
         return self.get_message_popup(message)

@@ -29,7 +29,7 @@
                     class="oe_highlight"/>
             <button name="mcs_send_order"
                     type="object"
-                    string="MCS Hello World"
+                    string="MCS Send Order"
                     class="oe_highlight"/>
           </header>
           <sheet>
