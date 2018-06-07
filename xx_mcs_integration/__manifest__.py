@@ -7,8 +7,6 @@
     'description': """MCS Integration""",
     'author': 'OpenERP SA',
     'depends': [
-        'delivery',
-        'gdf_multiwebsite',
         'product'
     ],
     'installable': True,
