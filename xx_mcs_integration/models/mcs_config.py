@@ -100,9 +100,9 @@ class mcs_config(models.Model):
 
             product = self.env["product.product"].search([("type", "=", "product")], limit=1)
             stock = self.get_stock_xml(product)
-            response_str = client.service.stock_request(user, pwd, version, stock.__str__().decode("UTF-8"))
+            response_str = client.service.stock_request(user, pwd, version, stock.__str__())
             response = ET.fromstring(response_str)
             message += "\n\nERROR:\n%s" % response.text if response.tag == "ERROR" else "\n\nLogin Sucess !"
         except Exception as e:
-            message = "Hello World Test with MCS has Failed: %s" %e
+            message = "Hello World Test with MCS has Failed: %s \n %s" % (e, stock.__str__)
         return self.get_message_popup(message)
