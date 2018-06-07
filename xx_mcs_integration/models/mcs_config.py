@@ -6,8 +6,6 @@ import xml.etree.ElementTree as ET
 from odoo.exceptions import ValidationError as VE
 
 import logging
-from odoo.api import Environment
-from odoo.modules.registry import RegistryManager
 
 _logger = logging.getLogger(__name__)
 
@@ -390,48 +388,46 @@ class mcs_config(models.Model):
         fail_pickings = []
         # loop over deliveries with mcs state completed. and get info from MCS
         for picking in pickings:
-            registry = RegistryManager.get(self.env.cr.dbname)
-            with Environment.manage():
-                new_env = Environment(registry.cursor(), self.env.uid, self.env.context)
-                picking_env = picking.with_env(new_env)
+            new_env = self.env
+            picking_env = picking.with_env(new_env)
 
-                try:
-                    lines = False
-                    type = picking_env.picking_type_id.code
-                    if type != "incoming":
-                        order = self.with_env(new_env).get_order_xml(picking_env)
-                        response_str = client.service.driebm_soap_functie(user, pwd, "serie_order", version,
-                                                                          order.__str__().decode("UTF-8"))
-                        response = ET.fromstring(response_str)
-                        serial = response.find("serial")
-                        numbers = serial.find("numbers")
-                        lines = numbers.findall("line")
-                        if not self.with_env(new_env).mcs_validate_serials(picking_env, lines, type):
-                            continue
-                    else:
-                        order = self.with_env(new_env).get_purchase_xml(picking_env)
-                        response_str = client.service.driebm_soap_functie(user, pwd, "get_asn", version,
-                                                                          order.__str__().decode("UTF-8"))
-                        response = ET.fromstring(response_str)
-                        purchaseorders = response.find("purchaseorders").find("purchaseorder")
-                        items = purchaseorders.find("items")
-                        lines = items.findall("item")
-                    # Transfer the delivery
-                    self.with_env(new_env).mcs_transfer_lines(picking_env, lines)
-                    updated_pickings.append(picking_env.name)
-                    picking_env.env.cr.commit()
-                except Exception, e:
-                    log_obj.create({
-                        "name": "In 'transfer' for %s" % picking.name,
-                        "desc": e,
-                    })
+            try:
+                lines = False
+                type = picking_env.picking_type_id.code
+                if type != "incoming":
+                    order = self.with_env(new_env).get_order_xml(picking_env)
+                    response_str = client.service.driebm_soap_functie(user, pwd, "serie_order", version,
+                                                                      order.__str__().decode("UTF-8"))
+                    response = ET.fromstring(response_str)
+                    serial = response.find("serial")
+                    numbers = serial.find("numbers")
+                    lines = numbers.findall("line")
+                    if not self.with_env(new_env).mcs_validate_serials(picking_env, lines, type):
+                        continue
+                else:
+                    order = self.with_env(new_env).get_purchase_xml(picking_env)
+                    response_str = client.service.driebm_soap_functie(user, pwd, "get_asn", version,
+                                                                      order.__str__().decode("UTF-8"))
+                    response = ET.fromstring(response_str)
+                    purchaseorders = response.find("purchaseorders").find("purchaseorder")
+                    items = purchaseorders.find("items")
+                    lines = items.findall("item")
+                # Transfer the delivery
+                self.with_env(new_env).mcs_transfer_lines(picking_env, lines)
+                updated_pickings.append(picking_env.name)
+                picking_env.env.cr.commit()
+            except Exception, e:
+                log_obj.create({
+                    "name": "In 'transfer' for %s" % picking.name,
+                    "desc": e,
+                })
 
-                    fail_pickings.append(picking.name)
-                    picking.message_post(body=_('Error during transfer: %s') % e)
-                    picking.write({'mcs_state': 'exception'})
-                    picking_env.env.cr.rollback()
-                finally:
-                    picking_env.env.cr.close()
+                fail_pickings.append(picking.name)
+                picking.message_post(body=_('Error during transfer: %s') % e)
+                picking.write({'mcs_state': 'exception'})
+                picking_env.env.cr.rollback()
+            finally:
+                picking_env.env.cr.close()
 
         if is_cron:
             _logger.info(
@@ -472,60 +468,6 @@ class mcs_config(models.Model):
         cr.commit()
         cr.close()
 
-    @api.multi
-    def mcs_button_stock_request(self):
-        stock_delta_model = "stock.delta"
-        stock_delta_line_vals = []
-        product_obj = self.env["product.product"]
-        client, user, pwd, version = self.get_connection_info()
-
-        products = product_obj.search([("type", "=", "product")])
-        if not products:
-            return self.get_message_popup("No Product Found")
-        stock = self.get_stock_xml(products)
-        response_str = client.service.stock_request(user, pwd, version, stock.__str__().decode("UTF-8"))
-        response = ET.fromstring(response_str)
-        items = response.findall("item")
-
-        for item in items:
-            sku = item.find("sku").text
-            if sku == "False":
-                continue
-            product = product_obj.search([("barcode", "=", sku)])
-            if len(product) != 1:
-                raise VE("Following products have the same EAN13 (%s)\n%s" % (
-                    sku,
-                    "\n".join(["%s (%s)" % (p.name, p.id) for p in product]),
-                ))
-            stock_amount = item.find("stock_amount").text
-            # odoo_qty = product.qty_available
-            # Change to forecasted qty (except incoming pos) because MCS takes also non processed
-            # orders into account
-            odoo_qty = product.qty_available - product.outgoing_qty
-            registry = RegistryManager.get(self.env.cr.dbname)
-            if not self.eq(stock_amount, odoo_qty, float):
-                stock_delta_line_vals.append([0, 0, {
-                    "product_id": product.id,
-                    "odoo_qty": odoo_qty,
-                    "third_party_qty": stock_amount,
-                }])
-                with Environment.manage():
-                    new_env = Environment(registry.cursor(), self.env.uid, self.env.context)
-                    self.pool.get('mcs.config').synchronize_stock(new_env.cr, new_env.uid, product.id, odoo_qty,
-                                                                  stock_amount, context=new_env.context)
-                product.update_third_party("mcs", stock_amount, odoo_qty)
-        stock_delta = self.env[stock_delta_model].create({
-            "name": "MCS Delta Compute",
-            "line_ids": stock_delta_line_vals,
-        })
-
-        return {
-            "type": "ir.actions.act_window",
-            "res_model": stock_delta_model,
-            "views": [[False, "form"]],
-            "res_id": stock_delta.id,
-            "target": "new",
-        }
 
     @api.model
     def mcs_cron_stock_request(self):
