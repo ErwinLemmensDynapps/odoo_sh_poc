@@ -104,5 +104,5 @@ class mcs_config(models.Model):
             response = ET.fromstring(response_str)
             message += "\n\nERROR:\n%s" % response.text if response.tag == "ERROR" else "\n\nLogin Sucess !"
         except Exception as e:
-            message = "Hello World Test with MCS has Failed: %s" %e.message
+            message = "Hello World Test with MCS has Failed: %s" %e
         return self.get_message_popup(message)
