@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="mcs_config_form" model="ir.ui.view">
+      <field name="name">MCS Config</field>
+      <field name="model">mcs.config</field>
+      <field name="arch" type="xml">
+        <form string="MCS Config">
+          <header>
+            <button name="mcs_button_order_status_check_all"
+                    type="object"
+                    string="MCS Outgoing State Check All"
+                    class="oe_highlight"/>
+            <button name="mcs_button_purchase_status_check_all"
+                    type="object"
+                    string="MCS Incoming State Check All"
+                    class="oe_highlight"/>
+            <button name="mcs_button_process_transfer"
+                    type="object"
+                    string="MCS Process Transfer"
+                    class="oe_highlight"/>
+            <button name="mcs_button_stock_request"
+                    type="object"
+                    string="MCS Stock Request"
+                    class="oe_highlight"/>
+            <button name="mcs_button_hello_world"
+                    type="object"
+                    string="MCS Hello World"
+                    class="oe_highlight"/>
+            <button name="mcs_send_order"
+                    type="object"
+                    string="MCS Send Order"
+                    class="oe_highlight"/>
+          </header>
+          <sheet>
+            <label class="oe_edit_only" for="name" string="MCS Config Name"/>
+            <h1><field name="name"/></h1>
+            <group>
+              <field name="mcs_url"/>
+            </group>
+            <group>
+              <group>
+                <field name="mcs_username"/>
+                <field password="True" name="mcs_pwd"/>
+              </group>
+              <group>
+                <field name="mcs_shop"/>
+                <field name="mcs_version"/>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="mcs_config_tree" model="ir.ui.view">
+      <field name="name">MCS Config</field>
+      <field name="model">mcs.config</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="mcs_shop"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="action_mcs_config" model="ir.actions.act_window">
+      <field name="name">MCS Configs</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">mcs.config</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+      id="menu_mcs_config"
+      name="MCS Configs"
+      parent="base.menu_administration"
+      sequence="5"
+      action="action_mcs_config"/>
+
+  </data>
+</odoo>
