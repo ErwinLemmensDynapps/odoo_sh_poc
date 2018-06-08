@@ -14,6 +14,7 @@ class ProductProduct(models.Model):
     _inherit = 'product.product'
 
     xx_sent_to_akeneo = fields.Boolean(string='Sent to Akeneo')
+    xx_sent_to_akeneo2 = fields.Boolean(string='Sent to Akeneo')
 
 
     @api.model
