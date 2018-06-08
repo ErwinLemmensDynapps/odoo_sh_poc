@@ -21,20 +21,20 @@ class ProductProduct(models.Model):
         # get Authorization token
         # if not self.env['ir.config_parameter'].sudo().get_param('sale.xx_enable_akeneo_interface'):
         #     return
-        base_url = 'https://demo.akeneo.com'
+        base_url = 'http://demo.akeneo.com'
         url = base_url + '/api/oauth/v1/token'
         username = 'admin'
         password = 'admin'
-        client_id = '1_54bjrt3co84kg08w4kc8ggsck4cwwk8o4k4woowgw8c48ssc0g'
-        secret = '113w260sc64g0k4c4wk4sk84swk08wwowc0w4kk4ocogwcgwsg'
-        family = 'created_by_odoo'
+        client_id = '1_1p8vk60u2h40ggc0kwgckc8ks88s8o0s4sowgkw48wogg0ss0o'
+        secret = '3eosuc0kyv8ksoos00gc0gwo4k48wcgwo8c8484o88w084wswc'
+        family = 'Accessories'
 
-        authorization = 'Basic %s' % base64.b64encode(client_id+':'+secret)
+        authorization = 'Basic %s' % base64.b64encode((client_id + ':' + secret).encode('UTF-8'))
         headers = {'Content-Type': 'application/json',
                    'Authorization': authorization}
         data = '''{ "grant_type": "password", "username": "%s", "password": "%s"}''' % (username, password)
         response = requests.post(url, data=data, headers=headers)
-        access_token = json.loads(response._content)['access_token']
+        access_token = 'YTI0NDcwNjQ5OWE5NGY4NDlhNzdkNTg5MmEyYzBjZjE1MDg0ZGNkNGZlOWRkMjEwYjFjNzY0ODkyYmNhYmUxNw'
         authorization = 'Bearer %s' % access_token
         # create product
         url = base_url + '/api/rest/v1/products'
@@ -76,7 +76,7 @@ class ProductProduct(models.Model):
 
 
 class ProductTemplate(models.Model):
-    _inherit = 'product.template'
+    _inherit = 'product.template' 
 
     xx_sent_to_akeneo = fields.Boolean(string='Sent to Akeneo', related='product_variant_ids.xx_sent_to_akeneo')
     xx_sent_to_akeneo2 = fields.Boolean(string='Sent to Akeneo', related='product_variant_ids.xx_sent_to_akeneo')
