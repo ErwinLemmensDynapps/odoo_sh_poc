@@ -13,6 +13,7 @@ class ProductProduct(models.Model):
     _inherit = 'product.product'
 
     xx_sent_to_akeneo = fields.Boolean(string='Sent to Akeneo')
+    xx_sent_to_akeneo2 = fields.Boolean(string='Sent to Akeneo')
 
 
     @api.model
@@ -78,4 +79,5 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     xx_sent_to_akeneo = fields.Boolean(string='Sent to Akeneo', related='product_variant_ids.xx_sent_to_akeneo')
+    xx_sent_to_akeneo2 = fields.Boolean(string='Sent to Akeneo', related='product_variant_ids.xx_sent_to_akeneo')
 
