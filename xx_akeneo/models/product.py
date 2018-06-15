@@ -5,7 +5,7 @@ import base64
 from odoo.exceptions import ValidationError
 from odoo import models, fields, api
 from odoo import SUPERUSER_ID
-import not_existng_package
+import qkdjqslfjkdqsldkj
 
 _logger = logging.getLogger(__name__)
 
