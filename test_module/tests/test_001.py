@@ -14,7 +14,7 @@ class TestCreatePartner(SavepointCase):
     @classmethod
     def setUpClass(cls):
         super(TestCreatePartner, cls).setUpClass()
-        cls.test_partner_1 = cls.env['res.parter'].create(
+        cls.test_partner_1 = cls.env['res.partner'].create(
             {'name': "Pieter Paulussen"})
 
     def test_01_partner_name(self):
